@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>Student Management</title>
 
-    <!-- Internal CSS -->
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -23,7 +22,6 @@
         h2 {
             text-align: center;
             margin-bottom: 25px;
-            color: #2c3e50;
         }
 
         .form-row {
@@ -35,8 +33,6 @@
         input {
             flex: 1;
             padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
         }
 
         .add-btn {
@@ -44,26 +40,23 @@
             background-color: #3498db;
             color: white;
             border: none;
-            border-radius: 5px;
             cursor: pointer;
         }
 
         table {
             width: 100%;
-            border-collapse: collapse;
             margin-top: 25px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
         }
 
         th {
             background-color: #3498db;
             color: white;
-            padding: 10px;
-            text-align: left;
-        }
-
-        td {
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
         }
 
         .edit {
@@ -71,8 +64,6 @@
             color: white;
             border: none;
             padding: 5px 10px;
-            border-radius: 4px;
-            cursor: pointer;
         }
 
         .delete {
@@ -80,8 +71,6 @@
             color: white;
             border: none;
             padding: 5px 10px;
-            border-radius: 4px;
-            cursor: pointer;
         }
     </style>
 </head>
@@ -90,45 +79,74 @@
 <div class="card">
     <h2>Student Management</h2>
 
-    <!-- Input UI -->
     <div class="form-row">
-        <input type="text" placeholder="Name">
-        <input type="number" placeholder="Age">
+        <input type="text" id="name" placeholder="Name">
+        <input type="number" id="age" placeholder="Age">
     </div>
 
     <div class="form-row">
-        <input type="text" placeholder="Course">
-        <button class="add-btn">Add</button>
+        <input type="text" id="course" placeholder="Course">
+        <button class="add-btn" onclick="addStudent()">Add</button>
     </div>
 
-    <!-- Table UI -->
     <table>
-        <tr>
-            <th>Name</th>
-            <th>Age</th>
-            <th>Course</th>
-            <th>Actions</th>
-        </tr>
-        <tr>
-            <td>John Doe</td>
-            <td>20</td>
-            <td>Mathematics</td>
-            <td>
-                <button class="edit">Edit</button>
-                <button class="delete">Delete</button>
-            </td>
-        </tr>
-        <tr>
-            <td>Jane Smith</td>
-            <td>22</td>
-            <td>Physics</td>
-            <td>
-                <button class="edit">Edit</button>
-                <button class="delete">Delete</button>
-            </td>
-        </tr>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Course</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="studentTable">
+        </tbody>
     </table>
 </div>
+
+<script>
+    function addStudent() {
+        let name = document.getElementById("name").value;
+        let age = document.getElementById("age").value;
+        let course = document.getElementById("course").value;
+
+        if (name === "" || age === "" || course === "") {
+            alert("Please fill all fields");
+            return;
+        }
+
+        let table = document.getElementById("studentTable");
+        let row = table.insertRow();
+
+        row.innerHTML = `
+            <td>${name}</td>
+            <td>${age}</td>
+            <td>${course}</td>
+            <td>
+                <button class="edit" onclick="editRow(this)">Edit</button>
+                <button class="delete" onclick="deleteRow(this)">Delete</button>
+            </td>
+        `;
+
+        document.getElementById("name").value = "";
+        document.getElementById("age").value = "";
+        document.getElementById("course").value = "";
+    }
+
+    function deleteRow(button) {
+        let row = button.parentElement.parentElement;
+        row.remove();
+    }
+
+    function editRow(button) {
+        let row = button.parentElement.parentElement;
+
+        document.getElementById("name").value = row.cells[0].innerText;
+        document.getElementById("age").value = row.cells[1].innerText;
+        document.getElementById("course").value = row.cells[2].innerText;
+
+        row.remove();
+    }
+</script>
 
 </body>
 </html>
