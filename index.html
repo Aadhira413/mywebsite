@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Student Management</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Segoe UI", sans-serif;
+    background: linear-gradient(135deg, #74ebd5, #9face6);
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card {
+    width: 650px;
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    animation: fadeIn 0.6s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #2c3e50;
+    letter-spacing: 1px;
+}
+
+.form-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+input {
+    flex: 1;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    outline: none;
+    transition: 0.3s;
+}
+
+input:focus {
+    border-color: #6c63ff;
+    box-shadow: 0 0 6px rgba(108,99,255,0.5);
+}
+
+.add-btn {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #6c63ff, #48c6ef);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.add-btn:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+}
+
+table {
+    width: 100%;
+    margin-top: 25px;
+    border-collapse: collapse;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+th {
+    background: linear-gradient(135deg, #6c63ff, #48c6ef);
+    color: white;
+    padding: 12px;
+}
+
+td {
+    padding: 12px;
+    text-align: center;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:hover {
+    background-color: #eef2ff;
+}
+
+.edit, .delete {
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    color: white;
+    transition: 0.3s;
+}
+
+.edit {
+    background-color: #27ae60;
+}
+
+.edit:hover {
+    background-color: #1e8449;
+}
+
+.delete {
+    background-color: #e74c3c;
+}
+
+.delete:hover {
+    background-color: #c0392b;
+}
+
+.footer {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 13px;
+    color: #777;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+    <h2>🎓 Student Management</h2>
+
+    <div class="form-row">
+        <input type="text" id="name" placeholder="Student Name">
+        <input type="number" id="age" placeholder="Age">
+    </div>
+
+    <div class="form-row">
+        <input type="text" id="course" placeholder="Course">
+    </div>
+
+    <button class="add-btn" onclick="addStudent()">➕ Add Student</button>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Course</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="studentTable"></tbody>
+    </table>
+
+    <div class="footer">
+        Simple Student Management System
+    </div>
+</div>
+
+<script>
+function addStudent() {
+    let name = document.getElementById("name").value;
+    let age = document.getElementById("age").value;
+    let course = document.getElementById("course").value;
+
+    if (name === "" || age === "" || course === "") {
+        alert("Please fill all fields");
+        return;
+    }
+
+    let table = document.getElementById("studentTable");
+    let row = table.insertRow();
+
+    row.innerHTML = `
+        <td>${name}</td>
+        <td>${age}</td>
+        <td>${course}</td>
+        <td>
+            <button class="edit" onclick="editRow(this)">Edit</button>
+            <button class="delete" onclick="deleteRow(this)">Delete</button>
+        </td>
+    `;
+
+    document.getElementById("name").value = "";
+    document.getElementById("age").value = "";
+    document.getElementById("course").value = "";
+}
+
+function deleteRow(btn) {
+    btn.closest("tr").remove();
+}
+
+function editRow(btn) {
+    let row = btn.closest("tr");
+
+    document.getElementById("name").value = row.cells[0].innerText;
+    document.getElementById("age").value = row.cells[1].innerText;
+    document.getElementById("course").value = row.cells[2].innerText;
+
+    row.remove();
+}
+</script>
+
+</body>
+</html>
